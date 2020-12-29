@@ -1,9 +1,7 @@
 const Poster = artifacts.require("./Poster.sol");
+const PosterShop = artifacts.require("./PosterShop.sol");
+
 module.exports = function(deployer) {
     deployer.deploy(Poster);
-};
-
-const PosterShop = artifacts.require("./PosterShop.sol");
-module.exports = function(deployer) {
     deployer.deploy(PosterShop);
 };
