@@ -1,0 +1,12 @@
+{
+  "name": "ubiq-poster-erc1155",
+  "version": "1.0.0",
+  "description": "Ubiq Poster ERC1155",
+  "main": "truffle-config.js",
+  "author": "Julian Yap",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.3.0"
+  }
+}
