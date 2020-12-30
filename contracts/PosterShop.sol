@@ -21,6 +21,8 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
     // So, if you are using a rate of 1 with a ERC20Detailed token with 3 decimals called TOK
     // 1 wei will give you 1 unit, or 0.001 TOK.
     uint256 public rate;
+    // Poster NFT holder address
+    address public erc1155Holder;
 
     /* ========== CONSTRUCTOR ========== */
     /**
@@ -35,7 +37,8 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
         uint256 _rate,
         address payable _wallet,
         IERC1155 _token,
-        uint256 _tokenID
+        uint256 _tokenID,
+        address _erc1155Holder
     ) public {
         require(_rate > 0, "NFT sale: rate is 0");
         require(_wallet != address(0), "NFT sale: wallet is the zero address");
@@ -48,6 +51,7 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
         wallet = _wallet;
         token = _token;
         tokenID = _tokenID;
+        erc1155Holder = _erc1155Holder;
     }
 
     /* ========== VIEWS ========== */
@@ -97,7 +101,7 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
         internal
     {
         IERC1155(token).safeTransferFrom(
-            address(this),
+            erc1155Holder,
             beneficiary,
             tokenID,
             tokenAmount,
@@ -115,7 +119,7 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
         view
         returns (uint256)
     {
-        return weiAmount.mul(rate);
+        return weiAmount.div(rate);
     }
 
     /**
@@ -123,6 +127,20 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
      */
     function _forwardFunds() internal {
         wallet.transfer(msg.value);
+    }
+
+    /**
+     * @dev fallback function ***DO NOT OVERRIDE***
+     * Note that other contracts will transfer funds with a base gas stipend
+     * of 2300, which is not enough to call buyTokens. Consider calling
+     * buyTokens directly when purchasing tokens from a contract.
+     */
+    fallback() external payable {
+        buyTokens(_msgSender());
+    }
+
+    receive() external payable {
+        buyTokens(_msgSender());
     }
 
     /* ========== RESTRICTED FUNCTIONS ========== */

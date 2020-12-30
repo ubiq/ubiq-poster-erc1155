@@ -10,5 +10,5 @@ module.exports = function (deployer, network, accounts) {
     };
 
     deployer.deploy(Poster);
-    deployer.deploy(PosterShop, rate, accounts[0], Poster.address, 0)
+    deployer.deploy(PosterShop, rate, accounts[0], Poster.address, 0, accounts[0])
 };
