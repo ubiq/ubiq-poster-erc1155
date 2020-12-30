@@ -89,6 +89,7 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
             "NFT sale: beneficiary is the zero address"
         );
         require(weiAmount != 0, "NFT sale: weiAmount is 0");
+        require(weiAmount >= rate, "NFT sale: weiAmount is < rate");
         this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
     }
 
