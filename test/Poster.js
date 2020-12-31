@@ -1,3 +1,5 @@
+const { expectRevert } = require('@openzeppelin/test-helpers');
+
 const Poster = artifacts.require("Poster");
 const PosterShop = artifacts.require("PosterShop");
 
@@ -81,6 +83,70 @@ contract("Poster and PosterShop", accounts => {
             rate.toString(),
             "5000000000000000000",
             "Poster Shop rate is not right"
+        );
+    });
+
+    it('fails on 0 Wei Poster Shop purchase', async () => {
+        await expectRevert(posterShopContract.buyTokens(user2, { from: user2 }), 'NFT sale: weiAmount is 0');
+    });
+
+    it('fails on No Approval Poster Shop purchase', async () => {
+        await expectRevert(posterShopContract.buyTokens(user2, { from: user2, value: 5000000000000000000 }), 'ERC1155: caller is not owner nor approved');
+    });
+
+    it('successfully purchases 1 Poster ID 0 when Poster Shop contract is approved', async () => {
+        const amount = 1;
+        await posterContract.setApprovalForAll(posterShopContract.address, true)
+
+        balance = await posterContract.balanceOf.call(user0, 0)
+        let user0_start_balance = balance.toNumber();
+        balance = await posterContract.balanceOf.call(user2, 0)
+        let user2_start_balance = balance.toNumber();
+
+        await posterShopContract.buyTokens(user2, { from: user2, value: 5000000000000000000 })
+
+        balance = await posterContract.balanceOf.call(user0, 0)
+        let user0_end_balance = balance.toNumber();
+        balance = await posterContract.balanceOf.call(user2, 0)
+        let user2_end_balance = balance.toNumber();
+
+        assert.equal(
+            user0_end_balance,
+            user0_start_balance - amount,
+            "Amount wasn't correctly taken from the sender"
+        );
+        assert.equal(
+            user2_end_balance,
+            user2_start_balance + amount,
+            "Amount wasn't correctly sent to the receiver"
+        );
+    });
+
+    it('successfully purchases 2 Poster ID 0 when sending correct amount', async () => {
+        const amount = 2;
+        await posterContract.setApprovalForAll(posterShopContract.address, true)
+
+        balance = await posterContract.balanceOf.call(user0, 0)
+        let user0_start_balance = balance.toNumber();
+        balance = await posterContract.balanceOf.call(user2, 0)
+        let user2_start_balance = balance.toNumber();
+
+        await posterShopContract.buyTokens(user2, { from: user2, value: 10000000000000000000 })
+
+        balance = await posterContract.balanceOf.call(user0, 0)
+        let user0_end_balance = balance.toNumber();
+        balance = await posterContract.balanceOf.call(user2, 0)
+        let user2_end_balance = balance.toNumber();
+
+        assert.equal(
+            user0_end_balance,
+            user0_start_balance - amount,
+            "Amount wasn't correctly taken from the sender"
+        );
+        assert.equal(
+            user2_end_balance,
+            user2_start_balance + amount,
+            "Amount wasn't correctly sent to the receiver"
         );
     });
 
