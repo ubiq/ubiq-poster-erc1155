@@ -180,4 +180,15 @@ contract("Poster and PosterShop", accounts => {
         await expectRevert(posterShopContract.buyTokens(user3, { from: user3, value: 4900000000000000000 }), 'NFT sale: weiAmount is < rate');
     });
 
+    it('should update the Rate to 5.1 UBQ correctly', async () => {
+        await posterShopContract.setRate(5100000000000000000n)
+
+        let rate = await posterShopContract.rate()
+
+        assert.equal(
+            rate.toString(),
+            "5100000000000000000",
+            "Poster Shop rate is not right"
+        );
+    });
 })
