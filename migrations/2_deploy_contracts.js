@@ -9,9 +9,6 @@ module.exports = function (deployer, network, accounts) {
         rate = 5000000000000000000n
     };
 
-    // deployer.deploy(Poster);
-    // deployer.deploy(PosterShop, rate, accounts[0], Poster.address, 0, accounts[0])
-
     deployer.then(async () => {
         await deployer.deploy(Poster)
         await deployer.deploy(PosterShop, rate, accounts[0], Poster.address, 0, accounts[0])
