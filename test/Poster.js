@@ -191,4 +191,26 @@ contract("Poster and PosterShop", accounts => {
             "Poster Shop rate is not right"
         );
     });
+
+    it('should update the ERC1155Holder address (and set back to original) correctly', async () => {
+        await posterShopContract.setERC1155Holder(user1)
+
+        erc1155Holder = await posterShopContract.erc1155Holder()
+
+        assert.equal(
+            erc1155Holder.toString(),
+            user1,
+            "Poster Shop holder not updated right"
+        );
+
+        await posterShopContract.setERC1155Holder(user0)
+
+        erc1155Holder = await posterShopContract.erc1155Holder()
+
+        assert.equal(
+            erc1155Holder.toString(),
+            user0,
+            "Poster Shop holder not updated right"
+        );
+    });
 })

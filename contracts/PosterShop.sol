@@ -16,10 +16,7 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
     uint256 public tokenID;
     // Address where funds are collected
     address payable public wallet;
-    // How many token units a buyer gets per wei.
-    // The rate is the conversion between wei and the smallest and indivisible token unit.
-    // So, if you are using a rate of 1 with a ERC20Detailed token with 3 decimals called TOK
-    // 1 wei will give you 1 unit, or 0.001 TOK.
+    // How many token units a buyer gets per wei
     uint256 public rate;
     // Poster NFT holder address
     address public erc1155Holder;
@@ -27,9 +24,6 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
     /* ========== CONSTRUCTOR ========== */
     /**
      * @param _rate Number of token units a buyer gets per wei
-     * @dev The rate is the conversion between wei and the smallest and indivisible
-     * token unit. So, if you are using a rate of 1 with a ERC20Detailed token
-     * with 3 decimals called TOK, 1 wei will give you 1 unit, or 0.001 TOK.
      * @param _wallet Address where collected funds will be forwarded to
      * @param _token Address of the token being sold
      */
@@ -111,7 +105,7 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
     }
 
     /**
-     * @dev Override to extend the way in which ether is converted to tokens.
+     * @dev Override to extend the way in which UBQ is converted to tokens.
      * @param weiAmount Value in wei to be converted into tokens
      * @return Number of tokens that can be purchased with the specified _weiAmount
      */
@@ -158,10 +152,7 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
     }
 
     function setToken(IERC1155 _token) external onlyOwner {
-        require(
-            address(_token) != address(0),
-            "NFT sale: token is the zero address"
-        );
+        require(address(_token) != address(0), "NFT sale: token is the zero address");
         token = _token;
         emit TokenUpdated(token);
     }
@@ -171,11 +162,18 @@ contract PosterShop is ERC1155Holder, Ownable, ReentrancyGuard {
         emit TokenIDUpdated(tokenID);
     }
 
+    function setERC1155Holder(address _erc1155Holder) external onlyOwner {
+        require(_erc1155Holder != address(0), "NFT sale: ERC1155Holder is the zero address");
+        erc1155Holder = _erc1155Holder;
+        emit ERC1155HolderUpdated(erc1155Holder);
+    }
+
     /* ========== EVENTS ========== */
     event RateUpdated(uint256 newRate);
     event WalletUpdated(address wallet);
     event TokenUpdated(IERC1155 token);
     event TokenIDUpdated(uint256 tokenID);
+    event ERC1155HolderUpdated(address erc1155Holder);
     /**
      * Event for token purchase logging
      * @param purchaser who paid for the tokens
