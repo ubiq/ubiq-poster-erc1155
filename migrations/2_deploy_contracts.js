@@ -2,8 +2,8 @@ const Poster = artifacts.require("./Poster.sol");
 const PosterShop = artifacts.require("./PosterShop.sol");
 
 module.exports = function (deployer, network, accounts) {
-    // 100 UBQ default
-    rate = 100000000000000000000n
+    // 88 UBQ default
+    rate = 88000000000000000000n
     if (network == "develop") {
         // 5 UBQ = 5000000000000000000 Wei
         rate = 5000000000000000000n

@@ -10,6 +10,6 @@ contract Poster is ERC1155PresetMinterPauser {
         public
         ERC1155PresetMinterPauser("https://poster.ubiqsmart.com/token/{id}")
     {
-        _mint(msg.sender, SHINOBI, 100, "");
+        _mint(msg.sender, SHINOBI, 88, "");
     }
 }
