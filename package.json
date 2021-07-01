@@ -7,9 +7,9 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "@openzeppelin/contracts": "^3.4.0"
+    "@openzeppelin/contracts": "^3.4.1"
   },
   "devDependencies": {
-    "@openzeppelin/test-helpers": "^0.5.10"
+    "@openzeppelin/test-helpers": "^0.5.11"
   }
 }
