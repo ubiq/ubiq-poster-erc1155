@@ -21,13 +21,13 @@ contract("Poster and PosterShop", accounts => {
         posterShopContract = await PosterShop.new(rate, user0, posterContract.address, 0, user0);
     });
 
-    it("should put 100 Poster ID 0 in the first account", async () => {
+    it("should put 88 Poster ID 0 in the first account", async () => {
         let balance = await posterContract.balanceOf.call(user0, 0)
 
         assert.equal(
             balance.toNumber(),
-            100,
-            "100 wasn't in the first account"
+            88,
+            "88 wasn't in the first account"
         );
     });
 
