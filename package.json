@@ -10,6 +10,13 @@
     "@openzeppelin/contracts": "^3.4.2"
   },
   "devDependencies": {
-    "@openzeppelin/test-helpers": "^0.5.12"
+    "@openzeppelin/test-helpers": "^0.5.12",
+    "solc": "0.6.2",
+    "truffle-flattener": "^1.5.0"
+  },
+  "scripts": {
+    "dist:poster": "truffle-flattener ./contracts/Poster.sol > ./deployments/Poster.full.sol && solcjs --bin --abi --optimize ./deployments/Poster.full.sol -o ./deployments && mv ./deployments/__deployments_Poster_full_sol_Poster.abi ./deployments/Poster.abi && mv ./deployments/__deployments_Poster_full_sol_Poster.bin ./deployments/Poster.bin && rm ./deployments/*_sol_*",
+    "dist:postershop": "truffle-flattener ./contracts/PosterShop.sol > ./deployments/PosterShop.full.sol && solcjs --bin --abi --optimize ./deployments/PosterShop.full.sol -o ./deployments && mv ./deployments/__deployments_PosterShop_full_sol_PosterShop.abi ./deployments/PosterShop.abi && mv ./deployments/__deployments_PosterShop_full_sol_PosterShop.bin ./deployments/PosterShop.bin && rm ./deployments/*_sol_*",
+    "dist": "yarn dist:poster && yarn dist:postershop"
   }
 }
